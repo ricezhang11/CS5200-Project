@@ -21,8 +21,7 @@ Please see file: businessRequirement.pdf
 Please see file "createTable.sql" under the folder "CreateTableSQL".
 
 Screen shots of we successfully create tables:
-![Uploading Screen Shot 2021-10-25 at 11.52.45 PM.png…]()
-
+<img width="865" alt="Screen Shot 2021-10-25 at 11 52 45 PM" src="https://user-images.githubusercontent.com/90733899/138977518-7aebb018-ea5d-4e1b-9e60-4736a56ea9e0.png">
 <img width="879" alt="Screen Shot 2021-10-26 at 4 54 06 PM" src="https://user-images.githubusercontent.com/90733899/138977362-8b3c93f9-b666-4ffd-9213-bbb302f26cb2.png">
 <img width="876" alt="Screen Shot 2021-10-26 at 4 54 22 PM" src="https://user-images.githubusercontent.com/90733899/138977369-f3e11b72-3839-468b-a1d6-d05255257a4f.png">
 
