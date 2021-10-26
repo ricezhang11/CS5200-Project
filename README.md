@@ -41,7 +41,7 @@ To prove the schema is in 2NF and BCNF, list out all the functional dependencies
     carID -> mileage
     carID -> isavailable
     
-    There’s only one primary key in this table. All the attributes in the Car schema are only and fully dependent on the primary key alone. Therefore this schema is in 2NF and BCNF. 
+There’s only one primary key in this table. All the attributes in the Car schema are only and fully dependent on the primary key alone. Therefore this schema is in 2NF and BCNF. 
 
     Customer:
     customerID -> firstName
@@ -52,7 +52,7 @@ To prove the schema is in 2NF and BCNF, list out all the functional dependencies
     customerID -> state
     customerID -> country
     
-    There’s only one primary key in this table. All the attributes in the Customer schema are only and fully dependent on the primary key alone. Therefore this schema is in 2NF and BCNF.
+There’s only one primary key in this table. All the attributes in the Customer schema are only and fully dependent on the primary key alone. Therefore this schema is in 2NF and BCNF.
     
     Booking:
     bookingID -> bookingStartDate
@@ -63,7 +63,7 @@ To prove the schema is in 2NF and BCNF, list out all the functional dependencies
     bookingID -> pickupRentalBranchID
     bookingID -> returnRentalBranchID
     
-    There’s only one primary key in this table. All the attributes in the Booking schema are only and fully dependent on the primary key alone. Therefore this schema is in 2NF and BCNF.
+There’s only one primary key in this table. All the attributes in the Booking schema are only and fully dependent on the primary key alone. Therefore this schema is in 2NF and BCNF.
 
     RentalBranch:
     rentalBranchID -> branchName
@@ -73,7 +73,7 @@ To prove the schema is in 2NF and BCNF, list out all the functional dependencies
     rentalBranchID -> country
     rentalBranchID -> branchManager
 
-    There’s only one primary key in this table. All the attributes in the RentalBranch schema are only and fully dependent on the primary key alone. Therefore this schema is in 2NF and BCNF.
+There’s only one primary key in this table. All the attributes in the RentalBranch schema are only and fully dependent on the primary key alone. Therefore this schema is in 2NF and BCNF.
 
     Car Category:
     categoryID -> categoryType
@@ -84,5 +84,5 @@ To prove the schema is in 2NF and BCNF, list out all the functional dependencies
     Car Make:
     makeID -> make
     
-    There’s only one primary key in these tables. All the attributes in these three schemas are only and fully dependent on their respective primary key alone. Therefore, these schemas are in 2NF and BCNF. 
+There’s only one primary key in these tables. All the attributes in these three schemas are only and fully dependent on their respective primary key alone. Therefore, these schemas are in 2NF and BCNF. 
 
