@@ -18,7 +18,8 @@ https://lucid.app/lucidchart/4cc47107-7d20-475b-9944-03504518d9ac/edit?page=0_0&
 Please see file: businessRequirement.pdf
 
 ## SQL data definition statements 
-Please see file "createTable.sql" under the folder "CreateTableSQL"
+Please see file "createTable.sql" under the folder "CreateTableSQL".
+
 Screen shots of we successfully create tables:
 <img width="1345" alt="Screen Shot 2021-10-25 at 11 53 52 PM" src="https://user-images.githubusercontent.com/90733899/138977047-d806bc75-df40-462f-8d59-7bc3eb3fb482.png">
 <img width="1419" alt="Screen Shot 2021-10-25 at 11 54 00 PM" src="https://user-images.githubusercontent.com/90733899/138977058-5f146a37-66ac-4397-bd56-fc3d31c88f01.png">
