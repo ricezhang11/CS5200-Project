@@ -15,11 +15,19 @@ https://lucid.app/lucidchart/4cc47107-7d20-475b-9944-03504518d9ac/edit?page=0_0&
 ![](Diagrams/erd.jpeg)
 
 ## Business requirement 
-please see file: 
+Please see file: businessRequirement.pdf
 
-## Database schema
+## SQL data definition statements 
+Please see file "createTable.sql" under the folder "CreateTableSQL"
 
-Our database schema:
+## How we populated the database using test data
+Please see other files under the folder "CreateTableSQL", which include the commands we used to populate the database
+
+## 5 queries we wrote for the database
+Please see the file "project_queries.sql"
+
+## Database schemas and proof that they are in BCNF:
+
 Car(carID, currentRentalBranchID, carCategoryID, modelID, makeID, startYear, mileage, isAvailable)
 Customer(customerID, firstName, lastName, phoneNumber, email, city, state, country)
 Booking(bookingID, bookingStartDate, bookingEndDate, carID, customerID, totalCharge, pickupRentalBranchID, returnRentalBranchID)
