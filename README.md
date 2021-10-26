@@ -6,10 +6,12 @@ We aim to develop a web-based management system for a car rental company. It has
 
 UML Diagram
 https://lucid.app/lucidchart/722ed355-65d1-47df-9cc8-3ba5faa57deb/edit?beaconFlowId=341BAFE5E164E51C&invitationId=inv_6ba983b6-83d2-4e74-866d-5fbff519bbd8&page=0_0#
+
 ![](Diagrams/Car Rental Management UML.jpeg)
 
 ERD Diagram
 https://lucid.app/lucidchart/4cc47107-7d20-475b-9944-03504518d9ac/edit?page=0_0&invitationId=inv_9cbd9f0a-f83d-4c95-931b-c6932ece15a2#
+
 ![](Diagrams/Car Rental ERD.jpeg)
 
 
