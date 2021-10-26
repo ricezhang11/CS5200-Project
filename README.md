@@ -28,23 +28,25 @@ Please see the file "project_queries.sql"
 
 ## Database schemas and proof that they are in BCNF:
 
-Car(carID, currentRentalBranchID, carCategoryID, modelID, makeID, startYear, mileage, isAvailable)
+Database schemas:
 
-Customer(customerID, firstName, lastName, phoneNumber, email, city, state, country)
+Car(**carID**, *currentRentalBranchID, carCategoryID, modelID, makeID,* startYear, mileage, isAvailable)
 
-Booking(bookingID, bookingStartDate, bookingEndDate, carID, customerID, totalCharge, pickupRentalBranchID, returnRentalBranchID)
+Customer(**customerID**, firstName, lastName, phoneNumber, email, city, state, country)
 
-RentalBranch(rentalBranchID, branchName, address, city, state, country, branchManager)
+Booking(**bookingID**, bookingStartDate, bookingEndDate, *carID, customerID,* totalCharge, pickupRentalBranchID, returnRentalBranchID)
 
-Car Category(categoryID, categoryType)
+RentalBranch(**rentalBranchID**, branchName, address, city, state, country, branchManager)
 
-Car Model(modelID, model)
+Car Category(**categoryID**, categoryType)
 
-Car Make(makeID, make)
+Car Model(**modelID**, model)
+
+Car Make(**makeID**, make)
 
 Proof that our schemas are in BCNF:
-They are in 1NF because all the attributes in all schemas are single-valued.
-To prove the schema is in 2NF and BCNF, list out all the functional dependencies in each schema:
+1.All the schemas are in 1NF because all the attributes in all schemas are single-valued.
+2.To prove the schema is in 2NF and BCNF, list out all the functional dependencies in each schema:
     
     Car:
     carID -> currentRentalBranchID
