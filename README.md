@@ -21,11 +21,13 @@ Please see file: businessRequirement.pdf
 Please see file "createTable.sql" under the folder "CreateTableSQL".
 
 Screen shots of we successfully create tables:
-<img width="1345" alt="Screen Shot 2021-10-25 at 11 53 52 PM" src="https://user-images.githubusercontent.com/90733899/138977047-d806bc75-df40-462f-8d59-7bc3eb3fb482.png">
-<img width="1419" alt="Screen Shot 2021-10-25 at 11 54 00 PM" src="https://user-images.githubusercontent.com/90733899/138977058-5f146a37-66ac-4397-bd56-fc3d31c88f01.png">
+![Uploading Screen Shot 2021-10-25 at 11.52.45 PM.png…]()
+
+<img width="879" alt="Screen Shot 2021-10-26 at 4 54 06 PM" src="https://user-images.githubusercontent.com/90733899/138977362-8b3c93f9-b666-4ffd-9213-bbb302f26cb2.png">
+<img width="876" alt="Screen Shot 2021-10-26 at 4 54 22 PM" src="https://user-images.githubusercontent.com/90733899/138977369-f3e11b72-3839-468b-a1d6-d05255257a4f.png">
 
 ## How we populated the database using test data
-Please see other files under the folder "CreateTableSQL", which include the commands we used to populate the database
+Please see other files under the folder "CreateTableSQL", which include the commands we used to populate the database.
 
 
 ## 5 queries we wrote for the database
