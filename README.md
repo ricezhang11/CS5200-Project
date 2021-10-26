@@ -1,5 +1,5 @@
 # Building an management system for a car rental company
-## The purpose of project
+## Purpose Statement
 We aim to develop a web-based management system for a car rental company. It has two main functionalities: 
 1. Facilitate the rental company to manage their car fleet. For example: the rental company can add a new car to their fleet, update a car's rental price and other information, or delete an existing car from the fleet. 
 2. Provide a powerful tool for the rental company to monitor their business activities in all aspects. For example: the system can display all the cars owned by the rental company, fleets at different locations, amount of transactions per month, number of customers etc. By closely monitoring their business data, the rental company can adjust business strategies based on performance as well as gain a better understanding of their customers in order to promote the quality of service. 
