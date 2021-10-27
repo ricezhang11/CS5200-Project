@@ -31,6 +31,10 @@ Please see other files under the folder "CreateTableSQL", which include the comm
 
 ## 5 queries we wrote for the database
 Please see the file "project_queries.sql"
+Screenshots of selected queries' run results
+![](Diagrams/ex1.jpeg)
+![](Diagrams/ex2.jpeg)
+![](Diagrams/ex3.jpeg)
 
 ## Database schemas and proof that they are in BCNF:
 
