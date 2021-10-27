@@ -120,7 +120,8 @@ There’s only one primary key in this table. All the attributes in the RentalBr
 There’s only one primary key in these tables. All the attributes in these three schemas are only and fully dependent on their respective primary key alone. Therefore, these schemas are in 2NF and BCNF. 
 
 ## Team contributions
-We splitted our tasks evenly during this assignment. We conducted zoom meetings/online chat/Lucid Chart to put together the business requirement documents, UML and ERD diagrams and BCNF analysis. 
-For creating tables, Bugu wrote the queries and April QA'ed for her. 
+We splitted our tasks evenly during this assignment. We conducted zoom meetings/online chat/Lucid Chart to put together the business requirement documents, UML and ERD diagrams and BCNF analysis.  
+For creating tables, Bugu wrote the queries and April QA'ed for her.  
 For creating testing data and populating the database, April created the test data online and Bugu performed the population.  
-For creating the 5 SQL queries, April wrote the queries and Bugu QA'ed for her. 
+For creating the 5 SQL queries, April wrote the queries and Bugu QA'ed for her.  
+We set up the Github repo together and both worked on uploading files into the repo as well as the write-up for this README.md file
