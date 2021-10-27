@@ -32,15 +32,20 @@ Please see other files under the folder "CreateTableSQL", which include the comm
 ## 5 queries we wrote for the database
 Please see the file "project_queries.sql"  
 Screenshots of the run results of these 5 queries  
-query 1  
+  
+query 1    
 ![](Diagrams/ex1.png)
+  
 query 2  
 ![](Diagrams/ex2.png)
+  
 query 3  
 ![](Diagrams/ex3.png)
-query 4
+  
+query 4  
 ![](Diagrams/ex4.png)
-query 5
+  
+query 5  
 ![](Diagrams/ex5.png)
 
 ## Database schemas and proof that they are in BCNF:
