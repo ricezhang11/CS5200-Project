@@ -85,6 +85,23 @@ router.post("/cars/:carID/edit", async (req, res, next) => {
   }
 });
 
+router.get("/cars/:carID/delete", async (req, res, next) => {
+  const carID = req.params.carID;
+
+  try {
+    let deletedCar = await myDb.deleteCarByID(carID);
+    console.log("delete", deletedCar);
+
+    if (deletedCar && deletedCar.changes === 1) {
+      res.redirect("/cars/?msg=Deleted");
+    } else {
+      res.redirect("/cars/?msg=Error Deleting");
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 // http://localhost:3000/references?pageSize=24&page=3&q=John
 // router.get("/references", async (req, res, next) => {
 //   const query = req.query.q || "";
