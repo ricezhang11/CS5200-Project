@@ -7,12 +7,12 @@ We aim to develop a web-based management system for a car rental company. It has
 ## UML Diagram
 https://lucid.app/lucidchart/722ed355-65d1-47df-9cc8-3ba5faa57deb/edit?beaconFlowId=341BAFE5E164E51C&invitationId=inv_6ba983b6-83d2-4e74-866d-5fbff519bbd8&page=0_0#
 
-![](Diagrams/uml.jpeg)
+![](Project_docs/Diagrams/uml.jpeg)
 
 ## ERD Diagram
 https://lucid.app/lucidchart/4cc47107-7d20-475b-9944-03504518d9ac/edit?page=0_0&invitationId=inv_9cbd9f0a-f83d-4c95-931b-c6932ece15a2#
 
-![](Diagrams/erd.jpeg)
+![](Project_docs/Diagrams/erd.jpeg)
 
 ## Business requirement 
 Please see file: businessRequirement.pdf
@@ -34,19 +34,19 @@ Please see the file "project_queries.sql"
 Screenshots of the run results of these 5 queries  
   
 query 1    
-![](Diagrams/ex1.png)
+![](Project_docs/Diagrams/ex1.png)
   
 query 2  
-![](Diagrams/ex2.png)
+![](Project_docs/Diagrams/ex2.png)
   
 query 3  
-![](Diagrams/ex3.png)
+![](Project_docs/Diagrams/ex3.png)
   
 query 4  
-![](Diagrams/ex4.png)
+![](Project_docs/Diagrams/ex4.png)
   
 query 5  
-![](Diagrams/ex5.png)
+![](Project_docs/Diagrams/ex5.png)
 
 ## Database schemas and proof that they are in BCNF:
 
