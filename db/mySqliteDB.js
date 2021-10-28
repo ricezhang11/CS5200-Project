@@ -65,8 +65,9 @@ async function getCarByID(carID) {
   });
 
   const stmt = await db.prepare(`
-    SELECT * FROM Car
-    WHERE carID = @carID;
+    SELECT * 
+    FROM Car, Car_Model, Car_Make, Car_Category, Rental_Branch
+    WHERE carID = @carID AND Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND Car.carCategoryID = Car_Category.categoryID AND Car.currentRentalBranchID = Rental_Branch.rentalBranchID
     `);
 
   const params = {
@@ -159,7 +160,7 @@ async function createCar(car) {
     VALUES (@carCategoryID, @modelID, @makeID, @startYear, @mileage, @isAvailable, @currentRentalBranchID);`);
 
   try {
-    return await stmt.run({
+    let newCar = await stmt.run({
       "@carCategoryID": car.carCategoryID,
       "@modelID": car.modelID,
       "@makeID": car.makeID,
@@ -169,6 +170,8 @@ async function createCar(car) {
       "@isAvailable": "1",
       "@currentRentalBranchID": car.currentRentalBranchID,
     });
+    console.log(newCar);
+    return newCar;
   } finally {
     await stmt.finalize();
     db.close();

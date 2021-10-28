@@ -46,23 +46,20 @@ router.post("/createCar", async (req, res, next) => {
   }
 });
 
-router.get("/cars/:carId/edit", async (req, res, next) => {
-  const carId = req.params.carId;
+router.get("/cars/:carID/edit", async (req, res, next) => {
+  const carID = req.params.carID;
 
   const msg = req.query.msg || null;
   try {
-    let ref = await myDb.getCarByID(carId);
-    let authors = await myDb.getAuthorsByReferenceID(reference_id);
+    let car = await myDb.getCarByID(carID);
 
-    console.log("edit reference", {
-      ref,
-      authors,
+    console.log("edit car", {
+      car,
       msg,
     });
 
-    res.render("./pages/editReference", {
-      ref,
-      authors,
+    res.render("./pages/editCar", {
+      car,
       msg,
     });
   } catch (err) {
@@ -70,18 +67,18 @@ router.get("/cars/:carId/edit", async (req, res, next) => {
   }
 });
 
-router.post("/references/:reference_id/edit", async (req, res, next) => {
-  const reference_id = req.params.reference_id;
-  const ref = req.body;
+router.post("/cars/:carID/edit", async (req, res, next) => {
+  const carID = req.params.carID;
+  const car = req.body;
 
   try {
-    let updateResult = await myDb.updateReferenceByID(reference_id, ref);
-    console.log("update", updateResult);
+    let updatedCar = await myDb.updateCarByID(carID, car);
+    console.log("update", updatedCar);
 
-    if (updateResult && updateResult.changes === 1) {
-      res.redirect("/references/?msg=Updated");
+    if (updatedCar && updatedCar.changes === 1) {
+      res.redirect("/cars/?msg=Updated");
     } else {
-      res.redirect("/references/?msg=Error Updating");
+      res.redirect("/cars/?msg=Error Updating");
     }
   } catch (err) {
     next(err);

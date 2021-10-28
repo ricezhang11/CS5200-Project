@@ -1,0 +1,98 @@
+<h2>Car</h2>
+
+<form
+  action=" <%= '/cars/' + car.carID + '/edit' %>"
+  method="POST"
+>
+
+  <div>
+    <label class="form-label">
+      Car ID:
+      <input
+        class="form-control"
+        type="text"
+        name="carID"
+        value="<%= car.carID %>"
+        disabled
+      />
+    </label>
+  </div>
+  <div>
+    <label class="form-label">
+      Car Model:
+      <input
+        class="form-control"
+        type="text"
+        name="model"
+        value="<%= car.model %>"
+      />
+    </label>
+  </div>
+
+  <div>
+    <label class="form-label">
+      Car make:
+      <input
+        class="form-control"
+        type="text"
+        name="make"
+        value="<%= car.make %>"
+      />
+    </label>
+  </div>
+
+  <div>
+    <label class="form-label">
+      Car category:
+      <input
+        class="form-control"
+        type="text"
+        name="category"
+        value="<%= car.categoryType %>"
+      />
+    </label>
+  </div>
+
+  <div>
+    <label class="form-label">
+      Service start year:
+      <input
+        class="form-control"
+        type="text"
+        name="startYear"
+        value="<%= car.startYear %>"
+      />
+    </label>
+  </div>
+
+  <div>
+    <label class="form-label">
+      Current mileage:
+      <input
+        class="form-control"
+        type="text"
+        name="mileage"
+        value="<%= car.mileage %>"
+      />
+    </label>
+  </div>
+
+    <div>
+    <label class="form-label">
+      Current rental branch:
+      <input
+        class="form-control"
+        type="text"
+        name="branch"
+        value="<%= car.branchName %>"
+      />
+    </label>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Edit</button>
+  <a
+    class="btn btn-danger"
+    href="<%= '/cars/' + car.carID + '/delete' %>"
+    >Delete</a
+  >
+</form>

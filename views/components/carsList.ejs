@@ -8,6 +8,11 @@
         <div class="card-text">
           <div><%= car.model %></div>
           <div><%= car.mileage %> miles</div>
+          <div>service starts from: <%= car.startYear %></div>
+          <div>
+            <a class="btn btn-outline-primary" href="<%= '/cars/' + car.carID + '/edit' %>">Edit</a>
+            <a class="btn btn-outline-danger" href="<%= '/cars/' + car.carID + '/delete' %>">Delete</a>
+          </div>
         </div>
       </div>
     </div>
