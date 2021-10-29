@@ -2,54 +2,124 @@
 const sqlite3 = require("sqlite3");
 const { open } = require("sqlite");
 
-async function getCars(query, page, pageSize) {
-  console.log("get cars", query);
+async function getCars(startYear, model, make, page, pageSize) {
+  console.log("get cars", startYear, model, make);
 
   const db = await open({
     filename: "./db/Car.db",
     driver: sqlite3.Database,
   });
 
-  const stmt = await db.prepare(`
-    SELECT carID, startYear, mileage, isAvailable, model, make
-    FROM Car, Car_Model, Car_Make, Car_Category
-    WHERE Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND Car.carCategoryID = Car_Category.categoryID
-    LIMIT @pageSize
-    OFFSET @offset
-    `);
+  let stmt = "";
 
-  const params = {
-    "@pageSize": pageSize,
-    "@offset": (page - 1) * pageSize,
-  };
+  if (startYear === "" && model === "" && make === "") {
+    stmt = await db.prepare(
+      "SELECT * FROM Car, Car_Model, Car_Make, Car_Category WHERE Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND Car.carCategoryID = Car_Category.categoryID LIMIT $pageSize OFFSET $offset",
+      {
+        $pageSize: pageSize,
+        $offset: (page - 1) * pageSize,
+      }
+    );
+  } else if (startYear !== "") {
+    stmt = await db.prepare(
+      "SELECT * FROM Car, Car_Model, Car_Make, Car_Category WHERE Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND Car.carCategoryID = Car_Category.categoryID AND startYear >= $startYear LIMIT $pageSize OFFSET $offset",
+      {
+        $startYear: startYear,
+        $pageSize: pageSize,
+        $offset: (page - 1) * pageSize,
+      }
+    );
+  } else if (model !== "" && make !== "") {
+    stmt = await db.prepare(
+      "SELECT * FROM Car, Car_Model, Car_Make, Car_Category WHERE Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND Car.carCategoryID = Car_Category.categoryID AND make = $make AND model = $model LIMIT $pageSize OFFSET $offset",
+      {
+        $make: make,
+        $model: model,
+        $pageSize: pageSize,
+        $offset: (page - 1) * pageSize,
+      }
+    );
+  } else if (model === "") {
+    stmt = await db.prepare(
+      "SELECT * FROM Car, Car_Model, Car_Make, Car_Category WHERE Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND Car.carCategoryID = Car_Category.categoryID AND make = $make LIMIT $pageSize OFFSET $offset",
+      {
+        $make: make,
+        $pageSize: pageSize,
+        $offset: (page - 1) * pageSize,
+      }
+    );
+  } else {
+    stmt = await db.prepare(
+      "SELECT * FROM Car, Car_Model, Car_Make, Car_Category WHERE Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND Car.carCategoryID = Car_Category.categoryID AND model = $model LIMIT $pageSize OFFSET $offset",
+      {
+        $model: model,
+        $pageSize: pageSize,
+        $offset: (page - 1) * pageSize,
+      }
+    );
+  }
 
   try {
-    return await stmt.all(params);
+    let cars = await stmt.all();
+    console.log(cars);
+    return cars;
   } finally {
     await stmt.finalize();
     db.close();
   }
 }
 
-async function getCarCount(query) {
-  console.log("get car count", query);
+async function getCarCount(startYear, model, make) {
+  console.log("get car count", startYear, model, make);
 
   const db = await open({
     filename: "./db/Car.db",
     driver: sqlite3.Database,
   });
 
-  const stmt = await db.prepare(`
-    SELECT COUNT(*) AS count
-    FROM Car
-    `);
+  let stmt = "";
 
-  // const params = {
-  //   "@query": query + "%",
-  // };
+  if (startYear === "" && model === "" && make === "") {
+    stmt = await db.prepare(
+      `
+    SELECT COUNT(*) AS count
+    FROM Car`
+    );
+  } else if (startYear !== "") {
+    stmt = await db.prepare(
+      "SELECT COUNT(*) AS count FROM Car WHERE startYear >= $startYear",
+      {
+        $startYear: startYear,
+      }
+    );
+  } else if (model !== "" && make !== "") {
+    stmt = await db.prepare(
+      "SELECT COUNT(*) AS count FROM Car, Car_Model, Car_Make WHERE Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND make = $make AND model = $model",
+      {
+        $make: make,
+        $model: model,
+      }
+    );
+  } else if (model === "") {
+    stmt = await db.prepare(
+      "SELECT COUNT(*) AS count FROM Car, Car_Model, Car_Make WHERE Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND make = $make",
+      {
+        $make: make,
+      }
+    );
+  } else {
+    stmt = await db.prepare(
+      "SELECT COUNT(*) AS count FROM Car, Car_Model, Car_Make WHERE Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND model = $model",
+      {
+        $model: model,
+      }
+    );
+  }
 
   try {
-    return (await stmt.get()).count;
+    let count = (await stmt.get()).count;
+    console.log(count);
+    return count;
   } finally {
     await stmt.finalize();
     db.close();
@@ -177,218 +247,6 @@ async function createCar(car) {
     db.close();
   }
 }
-
-// async function getReferences(query, page, pageSize) {
-//   console.log("getReferences", query);
-
-//   const db = await open({
-//     filename: "./db/database.db",
-//     driver: sqlite3.Database,
-//   });
-
-//   const stmt = await db.prepare(`
-//     SELECT * FROM Reference
-//     WHERE title LIKE @query
-//     ORDER BY created_on DESC
-//     LIMIT @pageSize
-//     OFFSET @offset;
-//     `);
-
-//   const params = {
-//     "@query": query + "%",
-//     "@pageSize": pageSize,
-//     "@offset": (page - 1) * pageSize,
-//   };
-
-//   try {
-//     return await stmt.all(params);
-//   } finally {
-//     await stmt.finalize();
-//     db.close();
-//   }
-// }
-
-// async function getReferencesCount(query) {
-//   console.log("getReferences", query);
-
-//   const db = await open({
-//     filename: "./db/database.db",
-//     driver: sqlite3.Database,
-//   });
-
-//   const stmt = await db.prepare(`
-//     SELECT COUNT(*) AS count
-//     FROM Reference
-//     WHERE title LIKE @query;
-//     `);
-
-//   const params = {
-//     "@query": query + "%",
-//   };
-
-//   try {
-//     return (await stmt.get(params)).count;
-//   } finally {
-//     await stmt.finalize();
-//     db.close();
-//   }
-// }
-
-// async function getReferenceByID(reference_id) {
-//   console.log("getReferenceByID", reference_id);
-
-//   const db = await open({
-//     filename: "./db/database.db",
-//     driver: sqlite3.Database,
-//   });
-
-//   const stmt = await db.prepare(`
-//     SELECT * FROM Reference
-//     WHERE reference_id = @reference_id;
-//     `);
-
-//   const params = {
-//     "@reference_id": reference_id,
-//   };
-
-//   try {
-//     return await stmt.get(params);
-//   } finally {
-//     await stmt.finalize();
-//     db.close();
-//   }
-// }
-
-// async function updateReferenceByID(reference_id, ref) {
-//   console.log("updateReferenceByID", reference_id, ref);
-
-//   const db = await open({
-//     filename: "./db/database.db",
-//     driver: sqlite3.Database,
-//   });
-
-//   const stmt = await db.prepare(`
-//     UPDATE Reference
-//     SET
-//       title = @title,
-//       published_on = @published_on
-//     WHERE
-//        reference_id = @reference_id;
-//     `);
-
-//   const params = {
-//     "@reference_id": reference_id,
-//     "@title": ref.title,
-//     "@published_on": ref.published_on,
-//   };
-
-//   try {
-//     return await stmt.run(params);
-//   } finally {
-//     await stmt.finalize();
-//     db.close();
-//   }
-// }
-
-// async function deleteReferenceByID(reference_id) {
-//   console.log("deleteReferenceByID", reference_id);
-
-//   const db = await open({
-//     filename: "./db/database.db",
-//     driver: sqlite3.Database,
-//   });
-
-//   const stmt = await db.prepare(`
-//     DELETE FROM Reference
-//     WHERE
-//        reference_id = @reference_id;
-//     `);
-
-//   const params = {
-//     "@reference_id": reference_id,
-//   };
-
-//   try {
-//     return await stmt.run(params);
-//   } finally {
-//     await stmt.finalize();
-//     db.close();
-//   }
-// }
-
-// async function insertReference(ref) {
-//   const db = await open({
-//     filename: "./db/database.db",
-//     driver: sqlite3.Database,
-//   });
-
-//   const stmt = await db.prepare(`INSERT INTO
-//     Reference(title, published_on)
-//     VALUES (@title, @published_on);`);
-
-//   try {
-//     return await stmt.run({
-//       "@title": ref.title,
-//       "@published_on": ref.published_on,
-//     });
-//   } finally {
-//     await stmt.finalize();
-//     db.close();
-//   }
-// }
-
-// async function getAuthorsByReferenceID(reference_id) {
-//   console.log("getAuthorsByReferenceID", reference_id);
-
-//   const db = await open({
-//     filename: "./db/database.db",
-//     driver: sqlite3.Database,
-//   });
-
-//   const stmt = await db.prepare(`
-//     SELECT * FROM Reference_Author
-//     NATURAL JOIN Author
-//     WHERE reference_id = @reference_id;
-//     `);
-
-//   const params = {
-//     "@reference_id": reference_id,
-//   };
-
-//   try {
-//     return await stmt.all(params);
-//   } finally {
-//     await stmt.finalize();
-//     db.close();
-//   }
-// }
-
-// async function addAuthorIDToReferenceID(reference_id, author_id) {
-//   console.log("addAuthorIDToReferenceID", reference_id, author_id);
-
-//   const db = await open({
-//     filename: "./db/database.db",
-//     driver: sqlite3.Database,
-//   });
-
-//   const stmt = await db.prepare(`
-//     INSERT INTO
-//     Reference_Author(reference_id, author_id)
-//     VALUES (@reference_id, @author_id);
-//     `);
-
-//   const params = {
-//     "@reference_id": reference_id,
-//     "@author_id": author_id,
-//   };
-
-//   try {
-//     return await stmt.run(params);
-//   } finally {
-//     await stmt.finalize();
-//     db.close();
-//   }
-// }
 
 module.exports.getCars = getCars;
 module.exports.getCarByID = getCarByID;
