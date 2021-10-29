@@ -34,6 +34,48 @@ router.get("/cars", async (req, res, next) => {
   }
 });
 
+// http://localhost:3000/customers?pageSize=24&page=3&q=John
+// display customers -- all customers or fit certain search queries
+router.get("/customers", async (req, res, next) => {
+  const page = +req.query.page || 1;
+  const pageSize = +req.query.pageSize || 24;
+  const msg = req.query.msg || null;
+  try {
+    let total = await myDb.getCustomerCount();
+    let customers = await myDb.getCustomers(page, pageSize);
+    res.render("./pages/customersIndex", {
+      customers,
+      msg,
+      currentPage: page,
+      lastPage: Math.ceil(total / pageSize),
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// get customer details
+router.get("/customers/:customerID", async (req, res, next) => {
+  const customerID = req.params.customerID;
+  try {
+    let customer = await myDb.getCustomerByID(customerID);
+    let bookings = await myDb.getCustomerBookingHistory(customerID);
+    let membershipStatus = await myDb.getCustomerMembershipStatus(customerID);
+
+    console.log("get customer by id", {
+      customer,
+    });
+
+    res.render("./components/customerDetail.ejs", {
+      customer,
+      bookings,
+      membershipStatus,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.post("/createCar", async (req, res, next) => {
   const car = req.body;
 

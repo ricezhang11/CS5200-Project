@@ -2,6 +2,29 @@
 const sqlite3 = require("sqlite3");
 const { open } = require("sqlite");
 
+async function getCustomers(page, pageSize) {
+  console.log("get customers");
+  const db = await open({
+    filename: "./db/Car.db",
+    driver: sqlite3.Database,
+  });
+
+  const stmt = await db.prepare(
+    "SELECT * FROM Customer LIMIT $pageSize OFFSET $offset",
+    {
+      $pageSize: pageSize,
+      $offset: (page - 1) * pageSize,
+    }
+  );
+
+  try {
+    return await stmt.all();
+  } finally {
+    await stmt.finalize();
+    db.close();
+  }
+}
+
 async function getCars(startYear, model, make, page, pageSize) {
   console.log("get cars", startYear, model, make);
 
@@ -63,6 +86,26 @@ async function getCars(startYear, model, make, page, pageSize) {
     let cars = await stmt.all();
     console.log(cars);
     return cars;
+  } finally {
+    await stmt.finalize();
+    db.close();
+  }
+}
+
+async function getCustomerCount() {
+  console.log("get customer count");
+
+  const db = await open({
+    filename: "./db/Car.db",
+    driver: sqlite3.Database,
+  });
+
+  const stmt = await db.prepare("SELECT COUNT(*) AS count FROM Customer");
+
+  try {
+    let count = (await stmt.get()).count;
+    console.log(count);
+    return count;
   } finally {
     await stmt.finalize();
     db.close();
@@ -146,6 +189,92 @@ async function getCarByID(carID) {
 
   try {
     return await stmt.get(params);
+  } finally {
+    await stmt.finalize();
+    db.close();
+  }
+}
+
+async function getCustomerByID(customerID) {
+  console.log("get customer by ID", customerID);
+
+  const db = await open({
+    filename: "./db/Car.db",
+    driver: sqlite3.Database,
+  });
+
+  const stmt = await db.prepare(`
+    SELECT *
+    FROM Customer
+    WHERE Customer.customerID = @customerID
+    `);
+
+  const params = {
+    "@customerID": customerID,
+  };
+
+  try {
+    let c = await stmt.get(params);
+    console.log(c);
+    return c;
+  } finally {
+    await stmt.finalize();
+    db.close();
+  }
+}
+
+async function getCustomerMembershipStatus(customerID) {
+  console.log("get customer membership status", customerID);
+
+  const db = await open({
+    filename: "./db/Car.db",
+    driver: sqlite3.Database,
+  });
+
+  const stmt = await db.prepare(`
+    SELECT sum(totalCharge),
+    CASE
+      WHEN sum(totalCharge) > 3000 THEN 'Gold membership'
+      WHEN sum(totalCharge) > 2000 THEN 'Silver membership'
+      WHEN sum(totalCharge) > 1000 THEN 'Bronze membership'
+      ELSE 'None'
+    END AS MembershipAward
+    FROM Booking
+    WHERE Booking.customerID = @customerID
+    `);
+
+  const params = {
+    "@customerID": customerID,
+  };
+
+  try {
+    return await stmt.get(params);
+  } finally {
+    await stmt.finalize();
+    db.close();
+  }
+}
+
+async function getCustomerBookingHistory(customerID) {
+  console.log("get customer booking history", customerID);
+
+  const db = await open({
+    filename: "./db/Car.db",
+    driver: sqlite3.Database,
+  });
+
+  const stmt = await db.prepare(`
+    SELECT * 
+    FROM Booking, Car, Rental_Branch, Car_Model 
+    WHERE customerID = @customerID AND Booking.carID = Car.carID AND pickupRentalBranchID = Rental_Branch.rentalBranchID AND Car.modelID = Car_Model.modelID
+    `);
+
+  const params = {
+    "@customerID": customerID,
+  };
+
+  try {
+    return await stmt.all(params);
   } finally {
     await stmt.finalize();
     db.close();
@@ -254,3 +383,8 @@ module.exports.updateCarByID = updateCarByID;
 module.exports.createCar = createCar;
 module.exports.deleteCarByID = deleteCarByID;
 module.exports.getCarCount = getCarCount;
+module.exports.getCustomers = getCustomers;
+module.exports.getCustomerCount = getCustomerCount;
+module.exports.getCustomerByID = getCustomerByID;
+module.exports.getCustomerBookingHistory = getCustomerBookingHistory;
+module.exports.getCustomerMembershipStatus = getCustomerMembershipStatus;
