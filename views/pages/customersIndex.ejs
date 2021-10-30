@@ -9,17 +9,10 @@
       <h1>Customer Management</h1>
       <br/>
 
-      <% if (msg) { %>
-        <div class="alert alert-primary">
-          <%= msg %>
-        </div>
-      <% } %>
-
-
       <div class="row">
-        <div class="col-8">
+           <%- include("../components/customerSearchBar.ejs", { times }) %>
           <br/>
-          <%- include("../components/customersList.ejs", { customers, currentPage, lastPage }) %>
+          <%- include("../components/customersList.ejs", { customers, times, currentPage, lastPage }) %>
         </div>
       </div>
 

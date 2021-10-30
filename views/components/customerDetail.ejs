@@ -28,7 +28,7 @@
             <th scope="col">Start Date</th>
             <th scope="col">End Date</th>
             <th scope="col">Transaction amount</th>
-            <th scope="col">Car model</th>
+            <th scope="col">Car make</th>
             <th scope="col">Pick up branch</th>
           </tr>
         </thead>
@@ -38,8 +38,8 @@
                 <th scope="row"><%= booking.bookingID %></th>
                 <td><%= booking.bookingStartDate %></td>
                 <td><%= booking.bookingEndDate %></td>
-                <td><%= booking.totalCharge %></td>
-                <td><%= booking.model %></td>
+                <td>$<%= booking.totalCharge %></td>
+                <td><%= booking.make %></td>
                 <td><%= booking.branchName %></td>
               </tr>
            <% } %>

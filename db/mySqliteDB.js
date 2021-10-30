@@ -2,23 +2,38 @@
 const sqlite3 = require("sqlite3");
 const { open } = require("sqlite");
 
-async function getCustomers(page, pageSize) {
+async function getCustomers(times, page, pageSize) {
   console.log("get customers");
   const db = await open({
     filename: "./db/Car.db",
     driver: sqlite3.Database,
   });
 
-  const stmt = await db.prepare(
-    "SELECT * FROM Customer LIMIT $pageSize OFFSET $offset",
-    {
-      $pageSize: pageSize,
-      $offset: (page - 1) * pageSize,
-    }
-  );
+  let stmt = "";
+
+  if (times === "") {
+    stmt = await db.prepare(
+      "SELECT * FROM Customer LIMIT $pageSize OFFSET $offset",
+      {
+        $pageSize: pageSize,
+        $offset: (page - 1) * pageSize,
+      }
+    );
+  } else {
+    stmt = await db.prepare(
+      "SELECT * FROM Customer, Booking WHERE Customer.customerID = Booking.customerID GROUP BY Customer.customerID HAVING count(*) > $times LIMIT $pageSize OFFSET $offset",
+      {
+        $times: parseInt(times),
+        $pageSize: pageSize,
+        $offset: (page - 1) * pageSize,
+      }
+    );
+  }
 
   try {
-    return await stmt.all();
+    let customers = await stmt.all();
+    console.log(customers);
+    return customers;
   } finally {
     await stmt.finalize();
     db.close();
@@ -92,15 +107,25 @@ async function getCars(startYear, model, make, page, pageSize) {
   }
 }
 
-async function getCustomerCount() {
-  console.log("get customer count");
+async function getCustomerCount(times) {
+  console.log("get customer count", times);
 
   const db = await open({
     filename: "./db/Car.db",
     driver: sqlite3.Database,
   });
 
-  const stmt = await db.prepare("SELECT COUNT(*) AS count FROM Customer");
+  let stmt = "";
+  if (times === "") {
+    stmt = await db.prepare("SELECT COUNT(*) AS count FROM Customer");
+  } else {
+    stmt = await db.prepare(
+      "SELECT COUNT(*) AS count FROM (SELECT COUNT(*) FROM Customer, Booking WHERE Customer.customerID = Booking.customerID GROUP BY Customer.customerID HAVING COUNT(*) > $times)",
+      {
+        $times: parseInt(times),
+      }
+    );
+  }
 
   try {
     let count = (await stmt.get()).count;
@@ -265,8 +290,8 @@ async function getCustomerBookingHistory(customerID) {
 
   const stmt = await db.prepare(`
     SELECT * 
-    FROM Booking, Car, Rental_Branch, Car_Model 
-    WHERE customerID = @customerID AND Booking.carID = Car.carID AND pickupRentalBranchID = Rental_Branch.rentalBranchID AND Car.modelID = Car_Model.modelID
+    FROM Booking, Car, Rental_Branch, Car_Make 
+    WHERE customerID = @customerID AND Booking.carID = Car.carID AND pickupRentalBranchID = Rental_Branch.rentalBranchID AND Car.makeID = Car_Make.makeID
     `);
 
   const params = {

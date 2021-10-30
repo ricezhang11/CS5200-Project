@@ -39,13 +39,14 @@ router.get("/cars", async (req, res, next) => {
 router.get("/customers", async (req, res, next) => {
   const page = +req.query.page || 1;
   const pageSize = +req.query.pageSize || 24;
-  const msg = req.query.msg || null;
+  const times = req.query.times || "";
+
   try {
-    let total = await myDb.getCustomerCount();
-    let customers = await myDb.getCustomers(page, pageSize);
+    let total = await myDb.getCustomerCount(times);
+    let customers = await myDb.getCustomers(times, page, pageSize);
     res.render("./pages/customersIndex", {
       customers,
-      msg,
+      times,
       currentPage: page,
       lastPage: Math.ceil(total / pageSize),
     });
