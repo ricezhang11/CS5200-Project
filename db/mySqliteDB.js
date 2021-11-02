@@ -437,6 +437,32 @@ async function getBranchByID(rentalBranchID) {
   }
 }
 
+async function getBookingByID(bookingID) {
+  console.log("get booking by ID", bookingID);
+
+  const db = await open({
+    filename: "./db/Car.db",
+    driver: sqlite3.Database,
+  });
+
+  const stmt = await db.prepare(`
+    SELECT * FROM Booking, Car, Car_Model, Car_Make, Car_Category, Rental_Branch,Customer WHERE Booking.customerID == Customer.customerID AND Booking.pickupRentalBranchID == Rental_Branch.rentalBranchID AND Booking.carID = Car.carID AND Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND Car.carCategoryID = Car_Category.categoryID AND booking.bookingID == @bookingID 
+    `);
+
+  const params = {
+    "@bookingID": bookingID,
+  };
+
+  try {
+    let c = await stmt.get(params);
+    console.log(c);
+    return c;
+  } finally {
+    await stmt.finalize();
+    db.close();
+  }
+}
+
 async function getCustomerByID(customerID) {
   console.log("get customer by ID", customerID);
 
@@ -731,3 +757,4 @@ module.exports.getBranchByID = getBranchByID;
 module.exports.deleteBranchByID = deleteBranchByID;
 module.exports.getBookings = getBookings;
 module.exports.getBookingCount = getBookingCount;
+module.exports.getBookingByID = getBookingByID;

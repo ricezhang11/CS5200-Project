@@ -62,6 +62,24 @@ router.get("/bookings", async (req, res, next) => {
   }
 });
 
+// booking details
+router.get("/bookings/:bookingID", async (req, res, next) => {
+  const bookingID = req.params.bookingID;
+  try {
+    let booking = await myDb.getBookingByID(bookingID);
+
+    console.log("get booking by id", {
+      booking,
+    });
+
+    res.render("./components/bookingDetail.ejs", {
+      booking,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 // branches router
 router.get("/branches", async (req, res, next) => {
   const topK = req.query.topK || "";
