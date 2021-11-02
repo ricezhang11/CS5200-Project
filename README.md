@@ -133,19 +133,20 @@ For creating testing data and populating the database, April created the test da
 For creating the 5 SQL queries, April wrote the queries and Bugu QA'ed for her.  
 We set up the Github repo together and both worked on uploading files into the repo as well as the write-up for this README.md file
 
-In terms of project implementation, the work is splitted as below:
+In terms of project implementation, the work is splitted as below:  
+  
 @Bugu Wu implemented:
-1. CRUD operations of Rental Branch
-2. Implemented rental branch search: Filter rental branches by total charge (transaction > 1000)
-3. Implemented booking analysis:
-   a. Filter bookings by start/end date
+1. CRUD operations of Rental Branch  
+2. Implemented rental branch search: Filter rental branches by total charge (transaction > 1000)  
+3. Implemented booking analysis:  
+   a. Filter bookings by start/end date  
    b. Filter bookings by car make/category
          
 @April Zhang implemented:
-1. CRUD operations of Car
-2. Implemented car search functionalities: 
-   a. Filter cars by service start year
-   b. Filter cars that belong to a certain make and model
-3. Implemented Customer analysis:
-   a. calculate customers' membership titles based on their total transaction amount (>3000 gold membership, >2000 silver membership, >1000 bronze membership).
+1. CRUD operations of Car  
+2. Implemented car search functionalities:  
+   a. Filter cars by service start year  
+   b. Filter cars that belong to a certain make and model  
+3. Implemented Customer analysis:  
+   a. calculate customers' membership titles based on their total transaction amount (>3000 gold membership, >2000 silver membership, >1000 bronze membership).  
    b. search and display customers that have booked with the company for more than certain times.
