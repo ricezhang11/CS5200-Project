@@ -1,5 +1,5 @@
 <form action="/bookings/">
-  <h5>Search bookings by start date</h5>
+  <h5>Search bookings by start date and end date</h5>
   <div class="input-group">
     <input
       class="form-control"
@@ -7,6 +7,13 @@
       name="startDate"
       placeholder="Search for bookings that starts after...."
       value="<%= startDate %>"
+    />
+    <input
+      class="form-control"
+      type="date"
+      name="endDate"
+      placeholder="Search for bookings that ends before...."
+      value="<%= endDate %>"
     />
     <button type="submit" class="btn-primary btn">Search</button>
   </div>

@@ -140,8 +140,8 @@ async function getCars(startYear, model, make, page, pageSize) {
   }
 }
 
-async function getBookings(startDate, model, make, page, pageSize) {
-  console.log("get bookings", startDate, model, make);
+async function getBookings(startDate, endDate, model, make, page, pageSize) {
+  console.log("get bookings", startDate, endDate, model, make);
   const db = await open({
     filename: "./db/Car.db",
     driver: sqlite3.Database,
@@ -149,7 +149,7 @@ async function getBookings(startDate, model, make, page, pageSize) {
 
   let stmt = "";
 
-  if (startDate === "" && model === "" && make === "") {
+  if (startDate === "" && endDate === "" && model === "" && make === "") {
     stmt = await db.prepare(
       "SELECT * FROM Booking, Car, Car_Model, Car_Make, Car_Category, Rental_Branch WHERE Booking.pickupRentalBranchID == Rental_Branch.rentalBranchID AND Booking.carID = Car.carID AND Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND Car.carCategoryID = Car_Category.categoryID LIMIT $pageSize OFFSET $offset",
       {
@@ -157,15 +157,36 @@ async function getBookings(startDate, model, make, page, pageSize) {
         $offset: (page - 1) * pageSize,
       }
     );
-  } else if (startDate !== "") {
-    stmt = await db.prepare(
-      "SELECT * FROM Booking, Car, Car_Model, Car_Make, Car_Category, Rental_Branch WHERE Booking.pickupRentalBranchID == Rental_Branch.rentalBranchID AND Booking.carID = Car.carID AND Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND Car.carCategoryID = Car_Category.categoryID AND booking.bookingStartDate >= $startDate LIMIT $pageSize OFFSET $offset",
-      {
-        $startDate: startDate,
-        $pageSize: pageSize,
-        $offset: (page - 1) * pageSize,
-      }
-    );
+  } else if (startDate !== "" || endDate !== "") {
+    if (endDate === "") {
+      stmt = await db.prepare(
+        "SELECT * FROM Booking, Car, Car_Model, Car_Make, Car_Category, Rental_Branch WHERE Booking.pickupRentalBranchID == Rental_Branch.rentalBranchID AND Booking.carID = Car.carID AND Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND Car.carCategoryID = Car_Category.categoryID AND booking.bookingStartDate >= $startDate LIMIT $pageSize OFFSET $offset",
+        {
+          $startDate: startDate,
+          $pageSize: pageSize,
+          $offset: (page - 1) * pageSize,
+        }
+      );
+    } else if (startDate == "") {
+      stmt = await db.prepare(
+        "SELECT * FROM Booking, Car, Car_Model, Car_Make, Car_Category, Rental_Branch WHERE Booking.pickupRentalBranchID == Rental_Branch.rentalBranchID AND Booking.carID = Car.carID AND Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND Car.carCategoryID = Car_Category.categoryID AND booking.bookingEndDate <= $endDate LIMIT $pageSize OFFSET $offset",
+        {
+          $endDate: endDate,
+          $pageSize: pageSize,
+          $offset: (page - 1) * pageSize,
+        }
+      );
+    } else {
+      stmt = await db.prepare(
+        "SELECT * FROM Booking, Car, Car_Model, Car_Make, Car_Category, Rental_Branch WHERE Booking.pickupRentalBranchID == Rental_Branch.rentalBranchID AND Booking.carID = Car.carID AND Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND Car.carCategoryID = Car_Category.categoryID AND booking.bookingStartDate >= $startDate AND booking.bookingEndDate <= $endDate LIMIT $pageSize OFFSET $offset",
+        {
+          $startDate: startDate,
+          $endDate: endDate,
+          $pageSize: pageSize,
+          $offset: (page - 1) * pageSize,
+        }
+      );
+    }
   } else if (model !== "" && make !== "") {
     stmt = await db.prepare(
       "SELECT * FROM Booking, Car, Car_Model, Car_Make, Car_Category, Rental_Branch WHERE Booking.pickupRentalBranchID == Rental_Branch.rentalBranchID AND Booking.carID = Car.carID AND Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND Car.carCategoryID = Car_Category.categoryID AND make = $make AND model = $model LIMIT $pageSize OFFSET $offset",
@@ -206,7 +227,7 @@ async function getBookings(startDate, model, make, page, pageSize) {
   }
 }
 
-async function getBookingCount(startDate, model, make) {
+async function getBookingCount(startDate, endDate, model, make) {
   console.log("get booking count", startDate, model, make);
 
   const db = await open({
@@ -216,19 +237,36 @@ async function getBookingCount(startDate, model, make) {
 
   let stmt = "";
 
-  if (startDate === "" && model === "" && make === "") {
+  if (startDate === "" && endDate === "" && model === "" && make === "") {
     stmt = await db.prepare(
       `
     SELECT COUNT(*) AS count
     FROM Booking`
     );
-  } else if (startDate !== "") {
-    stmt = await db.prepare(
-      "SELECT COUNT(*) AS count FROM Booking WHERE Booking.bookingStartDate >= $startDate",
-      {
-        $startDate: startDate,
-      }
-    );
+  } else if (startDate !== "" || endDate !== "") {
+    if (endDate === "") {
+      stmt = await db.prepare(
+        "SELECT COUNT(*) AS count FROM Booking WHERE Booking.bookingStartDate >= $startDate",
+        {
+          $startDate: startDate,
+        }
+      );
+    } else if (startDate === "") {
+      stmt = await db.prepare(
+        "SELECT COUNT(*) AS count FROM Booking WHERE Booking.bookingEndDate >= $endDate",
+        {
+          $endDate: endDate,
+        }
+      );
+    } else {
+      stmt = await db.prepare(
+        "SELECT COUNT(*) AS count FROM Booking WHERE Booking.bookingEndDate >= $endDate AND Booking.bookingStartDate >= $startDate",
+        {
+          $startDate: startDate,
+          $endDate: endDate,
+        }
+      );
+    }
   } else if (model !== "" && make !== "") {
     stmt = await db.prepare(
       "SELECT COUNT(*) AS count FROM Booking, Car, Car_Model, Car_Make WHERE Booking.carID = Car.carID AND Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND make = $make AND model = $model",

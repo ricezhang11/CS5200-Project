@@ -36,14 +36,16 @@ router.get("/cars", async (req, res, next) => {
 
 router.get("/bookings", async (req, res, next) => {
   const startDate = req.query.startDate || "";
+  const endDate = req.query.endDate || "";
   const model = req.query.model || "";
   const make = req.query.make || "";
   const page = +req.query.page || 1;
   const pageSize = +req.query.pageSize || 24;
   try {
-    let total = await myDb.getBookingCount(startDate, model, make);
+    let total = await myDb.getBookingCount(startDate, endDate, model, make);
     let bookings = await myDb.getBookings(
       startDate,
+      endDate,
       model,
       make,
       page,
@@ -52,6 +54,7 @@ router.get("/bookings", async (req, res, next) => {
     res.render("./pages/bookingIndex", {
       bookings,
       startDate,
+      endDate,
       model,
       make,
       currentPage: page,
