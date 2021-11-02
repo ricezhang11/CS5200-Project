@@ -144,8 +144,8 @@ async function getCars(startYear, model, make, page, pageSize) {
   }
 }
 
-async function getBookings(startYear, model, make, page, pageSize) {
-  console.log("get bookings", startYear, model, make);
+async function getBookings(startDate, model, make, page, pageSize) {
+  console.log("get bookings", startDate, model, make);
   const db = await open({
     filename: "./db/Car.db",
     driver: sqlite3.Database,
@@ -153,7 +153,7 @@ async function getBookings(startYear, model, make, page, pageSize) {
 
   let stmt = "";
 
-  if (startYear === "" && model === "" && make === "") {
+  if (startDate === "" && model === "" && make === "") {
     stmt = await db.prepare(
       "SELECT * FROM Booking, Car, Car_Model, Car_Make, Car_Category, Rental_Branch WHERE Booking.pickupRentalBranchID == Rental_Branch.rentalBranchID AND Booking.carID = Car.carID AND Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND Car.carCategoryID = Car_Category.categoryID LIMIT $pageSize OFFSET $offset",
       {
@@ -161,11 +161,11 @@ async function getBookings(startYear, model, make, page, pageSize) {
         $offset: (page - 1) * pageSize,
       }
     );
-  } else if (startYear !== "") {
+  } else if (startDate !== "") {
     stmt = await db.prepare(
-      "SELECT * FROM Booking, Car, Car_Model, Car_Make, Car_Category, Rental_Branch WHERE Booking.pickupRentalBranchID == Rental_Branch.rentalBranchID AND Booking.carID = Car.carID AND Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND Car.carCategoryID = Car_Category.categoryID AND booking.bookingStartDate >= $startYear LIMIT $pageSize OFFSET $offset",
+      "SELECT * FROM Booking, Car, Car_Model, Car_Make, Car_Category, Rental_Branch WHERE Booking.pickupRentalBranchID == Rental_Branch.rentalBranchID AND Booking.carID = Car.carID AND Car.modelID = Car_Model.modelID AND Car.makeID = Car_Make.makeID AND Car.carCategoryID = Car_Category.categoryID AND booking.bookingStartDate >= $startDate LIMIT $pageSize OFFSET $offset",
       {
-        $startYear: startYear,
+        $startDate: startDate,
         $pageSize: pageSize,
         $offset: (page - 1) * pageSize,
       }
@@ -210,8 +210,8 @@ async function getBookings(startYear, model, make, page, pageSize) {
   }
 }
 
-async function getBookingCount(startYear, model, make) {
-  console.log("get booking count", startYear, model, make);
+async function getBookingCount(startDate, model, make) {
+  console.log("get booking count", startDate, model, make);
 
   const db = await open({
     filename: "./db/Car.db",
@@ -220,17 +220,17 @@ async function getBookingCount(startYear, model, make) {
 
   let stmt = "";
 
-  if (startYear === "" && model === "" && make === "") {
+  if (startDate === "" && model === "" && make === "") {
     stmt = await db.prepare(
       `
     SELECT COUNT(*) AS count
     FROM Booking`
     );
-  } else if (startYear !== "") {
+  } else if (startDate !== "") {
     stmt = await db.prepare(
-      "SELECT COUNT(*) AS count FROM Booking WHERE Booking.bookingStartDate >= $startYear",
+      "SELECT COUNT(*) AS count FROM Booking WHERE Booking.bookingStartDate >= $startDate",
       {
-        $startYear: startYear,
+        $startDate: startDate,
       }
     );
   } else if (model !== "" && make !== "") {
