@@ -22,10 +22,10 @@ https://lucid.app/lucidchart/4cc47107-7d20-475b-9944-03504518d9ac/edit?page=0_0&
 ![](Project_docs/Diagrams/erd.jpeg)
 
 ## Business requirement 
-Please see file: businessRequirement.pdf
+Please see file: Project_docs/businessRequirement.pdf
 
 ## SQL data definition statements 
-Please see file "createTable.sql" under the folder "CreateTableSQL".
+Please see file Project_docs/CreateTableSQL/createTable.sql.
 
 Screen shots of we successfully create tables:
 <img width="865" alt="Screen Shot 2021-10-25 at 11 52 45 PM" src="https://user-images.githubusercontent.com/90733899/138977518-7aebb018-ea5d-4e1b-9e60-4736a56ea9e0.png">
@@ -33,7 +33,7 @@ Screen shots of we successfully create tables:
 <img width="876" alt="Screen Shot 2021-10-26 at 4 54 22 PM" src="https://user-images.githubusercontent.com/90733899/138977369-f3e11b72-3839-468b-a1d6-d05255257a4f.png">
 
 ## How we populated the database using test data
-Please see other files under the folder "CreateTableSQL", which include the commands we used to populate the database.
+Please see other files under the folder "Project_docs/CreateTableSQL", which include the commands we used to populate the database.
 
 
 ## 5 queries we wrote for the database
