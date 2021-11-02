@@ -137,8 +137,9 @@ In terms of project implementation, the work is splitted as below:
   
 @Bugu Wu implemented:
 1. CRUD operations of Rental Branch  
-2. Implemented rental branch search: Filter rental branches by total charge (transaction > 1000)  
-3. Implemented booking analysis:  
+2. Implemented rental branch search:  
+   a. Filter top K rental ranches based on their transaction amount   
+4. Implemented booking analysis:  
    a. Filter bookings by start/end date  
    b. Filter bookings by car make/category
          
@@ -148,5 +149,5 @@ In terms of project implementation, the work is splitted as below:
    a. Filter cars by service start year  
    b. Filter cars that belong to a certain make and model  
 3. Implemented Customer analysis:  
-   a. calculate customers' membership titles based on their total transaction amount (>3000 gold membership, >2000 silver membership, >1000 bronze membership).  
+   a. calculate customers' membership titles based on their total transaction amount (>$3000 gold membership, >$2000 silver membership, >$1000 bronze membership).  
    b. search and display customers that have booked with the company for more than certain times.
