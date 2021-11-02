@@ -2,7 +2,7 @@
 const sqlite3 = require("sqlite3");
 const { open } = require("sqlite");
 
-async function getBranches(topK, page, pageSize) {
+async function getBranches(topK) {
   console.log("get Branches");
   const db = await open({
     filename: "./db/Car.db",
@@ -13,11 +13,7 @@ async function getBranches(topK, page, pageSize) {
 
   if (topK === "") {
     stmt = await db.prepare(
-      "SELECT *, sum(Booking.totalCharge) AS totalTransaction FROM Rental_Branch LEFT JOIN Booking ON Booking.pickupRentalBranchID = Rental_Branch.rentalBranchID GROUP BY Rental_Branch.rentalBranchID ORDER BY Rental_Branch.branchName LIMIT $pageSize OFFSET $offset",
-      {
-        $pageSize: pageSize,
-        $offset: (page - 1) * pageSize,
-      }
+      "SELECT *, sum(Booking.totalCharge) AS totalTransaction FROM Rental_Branch LEFT JOIN Booking ON Booking.pickupRentalBranchID = Rental_Branch.rentalBranchID GROUP BY Rental_Branch.rentalBranchID ORDER BY Rental_Branch.branchName"
     );
   } else {
     // [TODO] select top K

@@ -91,7 +91,7 @@ router.get("/branches", async (req, res, next) => {
   });
   try {
     let total = await myDb.getBranchCount(topK);
-    let branches = await myDb.getBranches(topK, page, pageSize);
+    let branches = await myDb.getBranches(topK);
     res.render("./pages/branchesIndex", {
       branches,
       topK,
@@ -109,7 +109,7 @@ router.get("/branches", async (req, res, next) => {
 // display customers -- all customers or fit certain search queries
 router.get("/customers", async (req, res, next) => {
   const page = +req.query.page || 1;
-  const pageSize = +req.query.pageSize || 24;
+  const pageSize = +req.query.pageSize || 200;
   const times = req.query.times || "";
   try {
     let total = await myDb.getCustomerCount(times);
