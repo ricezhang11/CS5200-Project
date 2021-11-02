@@ -4,6 +4,13 @@ We aim to develop a web-based management system for a car rental company. It has
 1. Facilitate the rental company to manage their car fleet. For example: the rental company can add a new car to their fleet, update a car's rental price and other information, or delete an existing car from the fleet. 
 2. Provide a powerful tool for the rental company to monitor their business activities in all aspects. For example: the system can display all the cars owned by the rental company, fleets at different locations, amount of transactions per month, number of customers etc. By closely monitoring their business data, the rental company can adjust business strategies based on performance as well as gain a better understanding of their customers in order to promote the quality of service. 
 
+## How to run the program
+1. clone the project to your local using git clone.
+2. cd into project directory.
+3. run npm install command to install all necessary packages.
+4. run npm start command.
+5. open your browser and navigate to localhost:3000/ and you should see the "Car Management" page.
+
 ## UML Diagram
 https://lucid.app/lucidchart/722ed355-65d1-47df-9cc8-3ba5faa57deb/edit?beaconFlowId=341BAFE5E164E51C&invitationId=inv_6ba983b6-83d2-4e74-866d-5fbff519bbd8&page=0_0#
 
@@ -125,3 +132,20 @@ For creating tables, Bugu wrote the queries and April QA'ed for her.
 For creating testing data and populating the database, April created the test data online and Bugu performed the population.  
 For creating the 5 SQL queries, April wrote the queries and Bugu QA'ed for her.  
 We set up the Github repo together and both worked on uploading files into the repo as well as the write-up for this README.md file
+
+In terms of project implementation, the work is splitted as below:
+@Bugu Wu implemented:
+1. CRUD operations of Rental Branch
+2. Implemented rental branch search: Filter rental branches by total charge (transaction > 1000)
+3. Implemented booking analysis:
+   a. Filter bookings by start/end date
+   b. Filter bookings by car make/category
+         
+@April Zhang implemented:
+1. CRUD operations of Car
+2. Implemented car search functionalities: 
+   a. Filter cars by service start year
+   b. Filter cars that belong to a certain make and model
+3. Implemented Customer analysis:
+   a. calculate customers' membership titles based on their total transaction amount (>3000 gold membership, >2000 silver membership, >1000 bronze membership).
+   b. search and display customers that have booked with the company for more than certain times.
