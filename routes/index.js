@@ -34,13 +34,65 @@ router.get("/cars", async (req, res, next) => {
   }
 });
 
+router.get("/bookings", async (req, res, next) => {
+  const startYear = req.query.startYear || "";
+  const model = req.query.model || "";
+  const make = req.query.make || "";
+  const page = +req.query.page || 1;
+  const pageSize = +req.query.pageSize || 24;
+  try {
+    let total = await myDb.getBookingCount(startYear, model, make);
+    let bookings = await myDb.getBookings(
+      startYear,
+      model,
+      make,
+      page,
+      pageSize
+    );
+    res.render("./pages/bookingIndex", {
+      bookings,
+      startYear,
+      model,
+      make,
+      currentPage: page,
+      lastPage: Math.ceil(total / pageSize),
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// branches router
+router.get("/branches", async (req, res, next) => {
+  const topK = req.query.topK || "";
+  const page = +req.query.page || 1;
+  const pageSize = +req.query.pageSize || 24;
+  const msg = req.query.msg || null;
+  console.log("get branches by topK", {
+    topK,
+  });
+  try {
+    let total = await myDb.getBranchCount(topK);
+    let branches = await myDb.getBranches(topK, page, pageSize);
+    res.render("./pages/branchesIndex", {
+      branches,
+      topK,
+      msg,
+      currentPage: page,
+      lastPage: Math.ceil(total / pageSize),
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+});
+
 // http://localhost:3000/customers?pageSize=24&page=3&q=John
 // display customers -- all customers or fit certain search queries
 router.get("/customers", async (req, res, next) => {
   const page = +req.query.page || 1;
   const pageSize = +req.query.pageSize || 24;
   const times = req.query.times || "";
-
   try {
     let total = await myDb.getCustomerCount(times);
     let customers = await myDb.getCustomers(times, page, pageSize);
@@ -73,6 +125,20 @@ router.get("/customers/:customerID", async (req, res, next) => {
       membershipStatus,
     });
   } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/createBranch", async (req, res, next) => {
+  const branch = req.body;
+
+  try {
+    const newBranch = await myDb.createBranch(branch);
+
+    console.log("Created", newBranch);
+    res.redirect("/branches/?msg=created");
+  } catch (err) {
+    console.log("Error creating branch", err);
     next(err);
   }
 });
@@ -141,6 +207,62 @@ router.get("/cars/:carID/delete", async (req, res, next) => {
       res.redirect("/cars/?msg=Deleted");
     } else {
       res.redirect("/cars/?msg=Error Deleting");
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/branches/:rentalBranchID/delete", async (req, res, next) => {
+  const rentalBranchID = req.params.rentalBranchID;
+
+  try {
+    let deletedBranch = await myDb.deleteBranchByID(rentalBranchID);
+    console.log("delete", deletedBranch);
+
+    if (deletedBranch && deletedBranch.changes === 1) {
+      res.redirect("/branches/?msg=Deleted");
+    } else {
+      res.redirect("/branches/?msg=Error Deleting");
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/branches/:rentalBranchID/edit", async (req, res, next) => {
+  const rentalBranchID = req.params.rentalBranchID;
+
+  const msg = req.query.msg || null;
+  try {
+    let branch = await myDb.getBranchByID(rentalBranchID);
+
+    console.log("edit branch", {
+      branch,
+      msg,
+    });
+
+    res.render("./pages/editBranch", {
+      branch,
+      msg,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/branches/:rentalBranchID/edit", async (req, res, next) => {
+  const rentalBranchID = req.params.rentalBranchID;
+  const branch = req.body;
+
+  try {
+    let updatedBranch = await myDb.updateBranchByID(rentalBranchID, branch);
+    console.log("update", updatedBranch);
+
+    if (updatedBranch && updatedBranch.changes === 1) {
+      res.redirect("/branches/?msg=Updated");
+    } else {
+      res.redirect("/branches/?msg=Error Updating");
     }
   } catch (err) {
     next(err);
