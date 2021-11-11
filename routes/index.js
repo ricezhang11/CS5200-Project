@@ -164,6 +164,9 @@ router.post("/createBranch", async (req, res, next) => {
   }
 });
 
+//Code Review Jiayi Li -> Zhang Zhang:
+//Kindly suggest that it would be better if you could add the car to the top each time when you create a new car. It would be easy to check if it has been created successfully. 
+
 router.post("/createCar", async (req, res, next) => {
   const car = req.body;
 
