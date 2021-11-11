@@ -8,6 +8,9 @@ router.get("/", async function (req, res, next) {
   res.redirect("/cars");
 });
 
+//Code Review Jiayi Li -> Zhang Zhang:
+//Your routers are very clear to read and well organized.
+
 // http://localhost:3000/cars?pageSize=24&page=3&q=John
 // display cars -- all cars or fit certain search queries
 router.get("/cars", async (req, res, next) => {
